@@ -5,3 +5,11 @@ node_modules
 .idea/
 .zed
 resources
+
+# Server logs
+server.log
+server_launch.log
+
+# Gemini API test scripts
+scripts/test_gemini*.py
+scripts/discover_gemini_models.py
