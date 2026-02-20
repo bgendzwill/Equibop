@@ -143,5 +143,12 @@ export const VesktopNative = {
             ipcRenderer.on(IpcEvents.IPC_COMMAND, (_, message) => cb(message));
         },
         respond: (response: IpcResponse) => ipcRenderer.send(IpcEvents.IPC_COMMAND, response)
-    }
+    },
+    // Expose generic IPC for plugins (Redundant for safety)
+    pluginIpc: {
+        invoke: <T = any>(channel: string, ...args: any[]) => invoke<T>(channel, ...args),
+        sendSync: <T = any>(channel: string, ...args: any[]) => sendSync<T>(channel, ...args)
+    },
+    ipcInvoke: <T = any>(channel: string, ...args: any[]) => invoke<T>(channel, ...args),
+    ipcSendSync: <T = any>(channel: string, ...args: any[]) => sendSync<T>(channel, ...args)
 };

@@ -20,6 +20,8 @@ import { registerScreenShareHandler } from "./screenShare";
 import { Settings, State } from "./settings";
 import { setAsDefaultProtocolClient } from "./utils/setAsDefaultProtocolClient";
 import { isDeckGameMode } from "./utils/steamOS";
+import { VENCORD_DIR } from "./vencordDir";
+import { BackupService } from "./backupService";
 
 console.log("Equibop v" + app.getVersion());
 
@@ -138,6 +140,7 @@ function init() {
 init();
 
 async function bootstrap() {
+    BackupService.init();
     if (!Object.hasOwn(State.store, "firstLaunch")) {
         createFirstLaunchTour();
     } else {

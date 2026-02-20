@@ -41,6 +41,7 @@ import { PopoutWindows } from "./utils/popout";
 import { isDeckGameMode, showGamePage } from "./utils/steamOS";
 import { isValidVencordInstall } from "./utils/vencordLoader";
 import { VENCORD_DIR } from "./vencordDir";
+import { BackupService } from "./backupService";
 
 handleSync(IpcEvents.DEPRECATED_GET_VENCORD_PRELOAD_SCRIPT_PATH, () => join(VENCORD_DIR, "preload.js"));
 handleSync(IpcEvents.GET_VENCORD_PRELOAD_SCRIPT, () => readFileSync(join(VENCORD_DIR, "preload.js"), "utf-8"));
@@ -64,6 +65,7 @@ handleSync(IpcEvents.GET_SETTINGS, () => Settings.plain);
 handleSync(IpcEvents.GET_VERSION, () => app.getVersion());
 handleSync(IpcEvents.GET_GIT_HASH, () => EQUIBOP_GIT_HASH);
 handleSync(IpcEvents.GET_ENABLE_HARDWARE_ACCELERATION, () => enableHardwareAcceleration);
+handle(IpcEvents.SAVE_EXTERNAL_BACKUP, () => BackupService.performAutoBackup());
 
 handleSync(
     IpcEvents.SUPPORTS_WINDOWS_TRANSPARENCY,
@@ -248,3 +250,7 @@ handle(IpcEvents.VOICE_STATE_CHANGED, (_, variant: string) => {
 handle(IpcEvents.VOICE_CALL_STATE_CHANGED, (_, inCall: boolean) => {
     AppEvents.emit("voiceCallStateChanged", inCall);
 });
+
+import { CustomerStorageService } from "./customerStorage";
+handleSync(IpcEvents.CUSTOMER_READ, () => CustomerStorageService.readCustomers());
+handle(IpcEvents.CUSTOMER_WRITE, (_, data: any) => CustomerStorageService.writeCustomers(data));
